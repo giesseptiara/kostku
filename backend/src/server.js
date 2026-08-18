@@ -5,6 +5,8 @@ const kostRoutes = require("./routes/kost.routes");
 const roomsRoutes = require("./routes/rooms.routes");
 const facilitiesRoutes = require("./routes/facilities.routes");
 const galleryRoutes = require("./routes/gallery.routes");
+const adminRoutes = require("./routes/admin.routes");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +25,8 @@ app.use("/api/kost", kostRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/facilities", facilitiesRoutes);
 app.use("/api/gallery", galleryRoutes);
+app.use("/api/admins", adminRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`KostKu API running on http://localhost:${PORT}`);

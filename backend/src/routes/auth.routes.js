@@ -1,15 +1,15 @@
 const express = require("express");
-const kostController = require("../controllers/kost.controller");
+const authController = require("../controllers/auth.controller");
 const authenticateToken = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
-router.get("/", kostController.getKost);
+router.post("/login", authController.login);
 
-router.put(
-  "/",
+router.get(
+  "/me",
   authenticateToken,
-  kostController.updateKost
+  authController.me
 );
 
 module.exports = router;
