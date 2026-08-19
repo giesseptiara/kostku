@@ -1,0 +1,269 @@
+<div class="admin-rooms">
+
+  <header class="page-header">
+    <div>
+      <span class="badge">KOSTKU ADMIN</span>
+      <h1>Kelola Kamar</h1>
+      <p>Tambah, edit, dan hapus data kamar KostKu.</p>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openCreateForm()"
+    >
+      + Tambah Kamar
+    </button>
+  </header>
+
+  @if (success) {
+    <div class="alert success">
+      {{ success }}
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert error">
+      {{ error }}
+    </div>
+  }
+
+  @if (showForm) {
+
+    <section class="form-card">
+
+      <div class="form-header">
+        <div>
+          <span class="badge">
+            {{ editingRoom ? 'EDIT KAMAR' : 'KAMAR BARU' }}
+          </span>
+
+          <h2>
+            {{ editingRoom ? 'Edit Kamar' : 'Tambah Kamar' }}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form (submit)="$event.preventDefault(); saveRoom()">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="name">Nama Kamar</label>
+
+            <input
+              id="name"
+              type="text"
+              name="name"
+              [(ngModel)]="form.name"
+              placeholder="Contoh: Kamar A1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="price">Harga / Bulan</label>
+
+            <input
+              id="price"
+              type="number"
+              name="price"
+              [(ngModel)]="form.price"
+              placeholder="1000000"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="size">Ukuran</label>
+
+            <input
+              id="size"
+              type="text"
+              name="size"
+              [(ngModel)]="form.size"
+              placeholder="Contoh: 3x4 m"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+
+            <select
+              id="status"
+              name="status"
+              [(ngModel)]="form.status"
+            >
+              <option value="AVAILABLE">Tersedia</option>
+              <option value="OCCUPIED">Terisi</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="description">Deskripsi</label>
+
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="form.description"
+              rows="4"
+              placeholder="Deskripsi kamar..."
+            ></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeForm()"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="loading"
+          >
+            {{ loading ? 'Menyimpan...' : 'Simpan Kamar' }}
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  }
+
+  <section class="rooms-card">
+
+    <div class="section-header">
+
+      <div>
+        <span class="badge">DATA KAMAR</span>
+        <h2>Daftar Kamar</h2>
+      </div>
+
+      <span class="room-count">
+        {{ rooms.length }} kamar
+      </span>
+
+    </div>
+
+    @if (loading && rooms.length === 0) {
+
+      <p class="loading">
+        Memuat data kamar...
+      </p>
+
+    } @else if (rooms.length === 0) {
+
+      <p class="empty">
+        Belum ada data kamar.
+      </p>
+
+    } @else {
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Kamar</th>
+              <th>Harga</th>
+              <th>Ukuran</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (room of rooms; track room.id) {
+
+              <tr>
+
+                <td>
+                  <strong>{{ room.name }}</strong>
+
+                  <small>
+                    {{ room.description }}
+                  </small>
+                </td>
+
+                <td>
+                  Rp {{ room.price | number }}
+                </td>
+
+                <td>
+                  {{ room.size }}
+                </td>
+
+                <td>
+                  <span
+                    class="status"
+                    [class.available]="
+                      room.status === 'AVAILABLE'
+                    "
+                    [class.occupied]="
+                      room.status === 'OCCUPIED'
+                    "
+                  >
+                    {{
+                      room.status === 'AVAILABLE'
+                        ? 'Tersedia'
+                        : 'Terisi'
+                    }}
+                  </span>
+                </td>
+
+                <td>
+
+                  <div class="actions">
+
+                    <button
+                      type="button"
+                      class="edit-button"
+                      (click)="openEditForm(room)"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      class="delete-button"
+                      (click)="deleteRoom(room)"
+                    >
+                      Hapus
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </section>
+
+</div>

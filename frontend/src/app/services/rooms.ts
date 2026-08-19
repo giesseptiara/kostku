@@ -13,9 +13,23 @@ export interface Room {
   updated_at: string;
 }
 
+export interface RoomInput {
+  name: string;
+  description: string;
+  price: number;
+  status: 'AVAILABLE' | 'OCCUPIED';
+  size: string;
+}
+
 interface RoomsResponse {
   success: boolean;
   data: Room[];
+}
+
+interface RoomResponse {
+  success: boolean;
+  message: string;
+  data: Room;
 }
 
 @Injectable({
@@ -28,5 +42,22 @@ export class Rooms {
 
   getRooms(): Observable<RoomsResponse> {
     return this.http.get<RoomsResponse>(this.apiUrl);
+  }
+
+  createRoom(data: RoomInput): Observable<RoomResponse> {
+    return this.http.post<RoomResponse>(this.apiUrl, data);
+  }
+
+  updateRoom(id: number, data: RoomInput): Observable<RoomResponse> {
+    return this.http.put<RoomResponse>(
+      `${this.apiUrl}/${id}`,
+      data
+    );
+  }
+
+  deleteRoom(id: number): Observable<RoomResponse> {
+    return this.http.delete<RoomResponse>(
+      `${this.apiUrl}/${id}`
+    );
   }
 }

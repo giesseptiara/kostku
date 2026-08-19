@@ -1,0 +1,271 @@
+<div class="admin-facilities">
+
+  <header class="page-header">
+    <div>
+      <span class="badge">KOSTKU ADMIN</span>
+
+      <h1>Kelola Fasilitas</h1>
+
+      <p>
+        Tambah, edit, dan hapus fasilitas KostKu.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openCreateForm()"
+    >
+      + Tambah Fasilitas
+    </button>
+  </header>
+
+
+  @if (success) {
+    <div class="alert success">
+      {{ success }}
+    </div>
+  }
+
+
+  @if (error) {
+    <div class="alert error">
+      {{ error }}
+    </div>
+  }
+
+
+  @if (showForm) {
+
+    <section class="form-card">
+
+      <div class="form-header">
+
+        <div>
+          <span class="badge">
+            {{
+              editingFacility
+                ? 'EDIT FASILITAS'
+                : 'FASILITAS BARU'
+            }}
+          </span>
+
+          <h2>
+            {{
+              editingFacility
+                ? 'Edit Fasilitas'
+                : 'Tambah Fasilitas'
+            }}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <form
+        (submit)="$event.preventDefault(); saveFacility()"
+      >
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="name">
+              Nama Fasilitas
+            </label>
+
+            <input
+              id="name"
+              type="text"
+              name="name"
+              [(ngModel)]="form.name"
+              placeholder="Contoh: WiFi"
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+  <label for="icon">
+    Icon
+  </label>
+
+  <select
+    id="icon"
+    name="icon"
+    [(ngModel)]="form.icon"
+  >
+    <option value="">Pilih icon</option>
+    <option value="📶">📶 WiFi</option>
+    <option value="🚗">🚗 Parkir</option>
+    <option value="🚿">🚿 Kamar Mandi</option>
+    <option value="🍳">🍳 Dapur</option>
+    <option value="❄️">❄️ AC</option>
+    <option value="📺">📺 TV</option>
+    <option value="🧺">🧺 Laundry</option>
+    <option value="🏠">🏠 Lainnya</option>
+  </select>
+
+  <small class="input-hint">
+    Pilih icon yang sesuai dengan fasilitas.
+  </small>
+
+</div>
+
+
+          <div class="form-group full">
+
+            <label for="description">
+              Deskripsi
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="form.description"
+              rows="4"
+              placeholder="Deskripsi fasilitas..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeForm()"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="loading"
+          >
+            {{
+              loading
+                ? 'Menyimpan...'
+                : 'Simpan Fasilitas'
+            }}
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  }
+
+
+  <section class="facilities-card">
+
+    <div class="section-header">
+
+      <div>
+        <span class="badge">
+          DATA FASILITAS
+        </span>
+
+        <h2>
+          Daftar Fasilitas
+        </h2>
+      </div>
+
+      <span class="facility-count">
+        {{ facilities.length }} fasilitas
+      </span>
+
+    </div>
+
+
+    @if (loading && facilities.length === 0) {
+
+      <p class="loading">
+        Memuat data fasilitas...
+      </p>
+
+    }
+
+    @else if (facilities.length === 0) {
+
+      <p class="empty">
+        Belum ada data fasilitas.
+      </p>
+
+    }
+
+    @else {
+
+      <div class="facility-grid">
+
+        @for (
+          facility of facilities;
+          track facility.id
+        ) {
+
+          <article class="facility-card">
+
+            <div class="facility-icon">
+              {{ facility.icon || '🏠' }}
+            </div>
+
+
+            <div class="facility-content">
+
+              <h3>
+                {{ facility.name }}
+              </h3>
+
+              <p>
+                {{ facility.description }}
+              </p>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                type="button"
+                class="edit-button"
+                (click)="openEditForm(facility)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="delete-button"
+                (click)="deleteFacility(facility)"
+              >
+                Hapus
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+</div>

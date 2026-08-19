@@ -31,10 +31,11 @@ export class Login {
     this.error = '';
 
     this.auth.login(this.email, this.password).subscribe({
-  next: (response) => {
-    this.auth.saveToken(response.data.token);
-    this.router.navigate(['/admin/dashboard']);
-  },
+      next: (response) => {
+      this.auth.saveToken(response.data.token);
+      this.loading = false;
+      this.router.navigate(['/admin/dashboard']);
+    },
 
   error: (error) => {
     console.error('Login gagal:', error);

@@ -15,6 +15,15 @@ export const routes: Routes = [
       (m) => m.Dashboard
     ),
 },
+
+{
+  path: 'admin/rooms',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/admin/rooms/rooms').then(
+      (m) => m.RoomsAdminComponent
+    ),
+},
   {
     path: 'rooms',
     loadComponent: () =>
@@ -39,6 +48,22 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/home/home').then((m) => m.Home),
   },
+  {
+  path: 'admin/facilities',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/admin/facilities/facilities').then(
+      (m) => m.FacilitiesAdminComponent
+    ),
+},
+{
+  path: 'admin/gallery',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/admin/gallery/gallery').then(
+      (m) => m.GalleryAdminComponent
+    ),
+},
   {
     path: '**',
     redirectTo: '',

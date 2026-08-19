@@ -1,0 +1,283 @@
+<div class="admin-gallery">
+
+  <header class="page-header">
+    <div>
+      <span class="badge">KOSTKU ADMIN</span>
+
+      <h1>Kelola Gallery</h1>
+
+      <p>
+        Tambah, edit, dan hapus foto gallery KostKu.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="openCreateForm()"
+    >
+      + Tambah Gallery
+    </button>
+  </header>
+
+
+  @if (success) {
+    <div class="alert success">
+      {{ success }}
+    </div>
+  }
+
+
+  @if (error) {
+    <div class="alert error">
+      {{ error }}
+    </div>
+  }
+
+
+  @if (showForm) {
+
+    <section
+  #galleryForm
+  class="form-card"
+>
+
+      <div class="form-header">
+
+        <div>
+          <span class="badge">
+            {{
+              editingGallery
+                ? 'EDIT GALLERY'
+                : 'GALLERY BARU'
+            }}
+          </span>
+
+          <h2>
+            {{
+              editingGallery
+                ? 'Edit Gallery'
+                : 'Tambah Gallery'
+            }}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <form
+        (submit)="$event.preventDefault(); saveGallery()"
+      >
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label for="title">
+              Judul
+            </label>
+
+            <input
+              id="title"
+              type="text"
+              name="title"
+              [(ngModel)]="form.title"
+              placeholder="Contoh: Tampak Depan Kost"
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="image_url">
+              URL Gambar
+            </label>
+
+            <input
+              id="image_url"
+              type="url"
+              name="image_url"
+              [(ngModel)]="form.image_url"
+              placeholder="https://..."
+            />
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="description">
+              Deskripsi
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="form.description"
+              rows="4"
+              placeholder="Deskripsi gambar..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        @if (form.image_url) {
+
+          <div class="image-preview">
+
+            <p>Preview Gambar</p>
+
+            <img
+              [src]="form.image_url"
+              [alt]="form.title || 'Preview'"
+            />
+
+          </div>
+
+        }
+
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeForm()"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="loading"
+          >
+            {{
+              loading
+                ? 'Menyimpan...'
+                : 'Simpan Gallery'
+            }}
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  }
+
+
+  <section class="gallery-card">
+
+    <div class="section-header">
+
+      <div>
+        <span class="badge">
+          DATA GALLERY
+        </span>
+
+        <h2>
+          Daftar Gallery
+        </h2>
+      </div>
+
+      <span class="gallery-count">
+        {{ gallery.length }} foto
+      </span>
+
+    </div>
+
+
+    @if (loading && gallery.length === 0) {
+
+      <p class="loading">
+        Memuat data gallery...
+      </p>
+
+    }
+
+    @else if (gallery.length === 0) {
+
+      <p class="empty">
+        Belum ada data gallery.
+      </p>
+
+    }
+
+    @else {
+
+      <div class="gallery-grid">
+
+        @for (
+          item of gallery;
+          track item.id
+        ) {
+
+          <article class="gallery-item">
+
+            <div class="image-wrapper">
+
+              <img
+                [src]="item.image_url"
+                [alt]="item.title"
+              />
+
+            </div>
+
+
+            <div class="gallery-content">
+
+              <h3>
+                {{ item.title }}
+              </h3>
+
+              <p>
+                {{ item.description }}
+              </p>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                type="button"
+                class="edit-button"
+                (click)="openEditForm(item)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="delete-button"
+                (click)="deleteGallery(item)"
+              >
+                Hapus
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+</div>

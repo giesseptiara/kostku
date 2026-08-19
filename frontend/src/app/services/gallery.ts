@@ -10,9 +10,21 @@ export interface GalleryItem {
   created_at: string;
 }
 
+export interface GalleryInput {
+  title: string;
+  image_url: string;
+  description: string;
+}
+
 interface GalleryResponse {
   success: boolean;
   data: GalleryItem[];
+}
+
+interface GalleryItemResponse {
+  success: boolean;
+  message: string;
+  data: GalleryItem;
 }
 
 @Injectable({
@@ -25,5 +37,32 @@ export class Gallery {
 
   getGallery(): Observable<GalleryResponse> {
     return this.http.get<GalleryResponse>(this.apiUrl);
+  }
+
+  createGallery(
+    data: GalleryInput
+  ): Observable<GalleryItemResponse> {
+    return this.http.post<GalleryItemResponse>(
+      this.apiUrl,
+      data
+    );
+  }
+
+  updateGallery(
+    id: number,
+    data: GalleryInput
+  ): Observable<GalleryItemResponse> {
+    return this.http.put<GalleryItemResponse>(
+      `${this.apiUrl}/${id}`,
+      data
+    );
+  }
+
+  deleteGallery(
+    id: number
+  ): Observable<GalleryItemResponse> {
+    return this.http.delete<GalleryItemResponse>(
+      `${this.apiUrl}/${id}`
+    );
   }
 }

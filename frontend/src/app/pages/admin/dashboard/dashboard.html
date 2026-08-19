@@ -1,13 +1,105 @@
 <div class="dashboard">
-  <h1>Admin Dashboard</h1>
 
-  <p>Selamat datang di KostKu Management System.</p>
+  <header class="dashboard-header">
+    <div class="header-content">
+      <span class="badge">KOSTKU ADMIN</span>
 
-  <div class="dashboard-actions">
-    <a routerLink="/">Lihat Website</a>
+      <h1>Dashboard</h1>
 
-    <button type="button" (click)="logout()">
-      Logout
-    </button>
-  </div>
+      @if (admin$ | async; as admin) {
+        <p>
+          Selamat datang, <strong>{{ admin.name }}</strong>.
+        </p>
+      } @else {
+        <p>
+          Kelola informasi dan data KostKu Residence.
+        </p>
+      }
+    </div>
+
+    <div class="header-actions">
+      <a
+        routerLink="/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Lihat Website
+      </a>
+
+      <button type="button" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </header>
+
+
+  @if (rooms$ | async; as rooms) {
+
+    <section class="stats">
+
+      <div class="stat-card">
+        <span>Total Kamar</span>
+        <strong>{{ rooms.length }}</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>Kamar Tersedia</span>
+        <strong>{{ getAvailableRooms(rooms) }}</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>Kamar Terisi</span>
+        <strong>{{ getOccupiedRooms(rooms) }}</strong>
+      </div>
+
+    </section>
+
+
+    <section class="rooms-section">
+
+      <div class="section-header">
+        <div>
+          <span class="badge">DATA KAMAR</span>
+          <h2>Daftar Kamar</h2>
+        </div>
+
+        <a routerLink="/rooms">
+          Lihat Semua
+        </a>
+      </div>
+
+
+      <div class="rooms-table">
+
+        @for (room of rooms; track room.id) {
+
+          <div class="room-row">
+
+            <div class="room-info">
+              <strong>{{ room.name }}</strong>
+              <p>{{ room.size }}</p>
+            </div>
+
+            <div class="room-price">
+              Rp {{ room.price | number }} / bulan
+            </div>
+
+            <div
+              class="room-status"
+              [class.available]="room.status === 'AVAILABLE'"
+              [class.occupied]="room.status === 'OCCUPIED'"
+            >
+              {{ room.status === 'AVAILABLE' ? 'Tersedia' : 'Terisi' }}
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+  }
+
 </div>

@@ -2,16 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Admin {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface LoginResponse {
   success: boolean;
   message: string;
   data: {
     token: string;
-    admin: {
-      id: number;
-      name: string;
-      email: string;
-    };
+    admin: Admin;
+  };
+}
+
+export interface MeResponse {
+  success: boolean;
+  message: string;
+  data: {
+    admin: Admin;
   };
 }
 
@@ -28,6 +38,10 @@ export class Auth {
       email,
       password,
     });
+  }
+
+  getCurrentAdmin(): Observable<MeResponse> {
+    return this.http.get<MeResponse>(`${this.apiUrl}/me`);
   }
 
   saveToken(token: string): void {
