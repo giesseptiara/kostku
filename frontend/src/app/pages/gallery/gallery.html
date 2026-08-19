@@ -1,0 +1,31 @@
+<section class="gallery">
+  <div class="section-header">
+    <p class="badge">GALERI</p>
+
+    <h2>KostKu Residence</h2>
+
+    <p>
+      Lihat suasana dan fasilitas KostKu Residence.
+    </p>
+  </div>
+
+  @if (gallery$ | async; as gallery) {
+    <div class="gallery-grid">
+      @for (item of gallery; track item.id) {
+        <article class="gallery-card">
+          <img
+            [src]="item.image_url"
+            [alt]="item.title"
+          />
+
+          <div class="gallery-info">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <p>Memuat galeri...</p>
+  }
+</section>

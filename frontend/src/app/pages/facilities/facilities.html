@@ -1,0 +1,29 @@
+<section class="facilities">
+  <div class="section-header">
+    <p class="badge">FASILITAS</p>
+
+    <h2>Fasilitas KostKu</h2>
+
+    <p>
+      Fasilitas yang tersedia untuk menunjang kenyamanan penghuni.
+    </p>
+  </div>
+
+  @if (facilities$ | async; as facilities) {
+    <div class="facility-grid">
+      @for (facility of facilities; track facility.id) {
+        <article class="facility-card">
+          <div class="facility-icon">
+            {{ facility.icon }}
+          </div>
+
+          <h3>{{ facility.name }}</h3>
+
+          <p>{{ facility.description }}</p>
+        </article>
+      }
+    </div>
+  } @else {
+    <p>Memuat fasilitas...</p>
+  }
+</section>

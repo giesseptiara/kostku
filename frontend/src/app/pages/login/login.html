@@ -1,0 +1,43 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="brand">
+      <div class="brand-icon">K</div>
+      <h1>KostKu</h1>
+      <p>Admin Management System</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="admin@example.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Masukkan password"
+          required
+        />
+      </div>
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+  </div>
+</div>

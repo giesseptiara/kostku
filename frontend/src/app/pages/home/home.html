@@ -1,0 +1,280 @@
+<div class="home">
+
+  @if (kost$ | async; as kost) {
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="brand">
+        <span class="brand-mark">K</span>
+        <span>KostKu</span>
+      </div>
+
+      <nav>
+        <a href="#home">Beranda</a>
+        <a href="#gallery">Galeri</a>
+        <a href="#rooms">Kamar</a>
+        <a href="#facilities">Fasilitas</a>
+        <a href="#contact">Kontak</a>
+      </nav>
+
+      <a routerLink="/admin/login" class="admin-link">
+        Admin
+      </a>
+    </header>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+
+      <div class="hero-content">
+        <p class="badge">KOSTKU RESIDENCE</p>
+
+        <h1>
+          Tempat nyaman untuk
+          <span>tinggal dan beristirahat.</span>
+        </h1>
+
+        <p class="hero-description">
+          {{ kost.description }}
+        </p>
+
+        <div class="hero-location">
+          📍 {{ kost.address }}, {{ kost.city }}
+        </div>
+
+        <div class="hero-price">
+          <span>Mulai dari</span>
+          <strong>Rp {{ kost.price_start | number }}</strong>
+          <span>/ bulan</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#rooms" class="primary-button">
+            Lihat Kamar
+          </a>
+
+          <a
+            [href]="'https://wa.me/' + kost.whatsapp"
+            target="_blank"
+            class="secondary-button"
+          >
+            Hubungi Kami
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-image">
+        @if (gallery$ | async; as gallery) {
+          @if (gallery.length > 0) {
+            <img
+              [src]="gallery[0].image_url"
+              [alt]="gallery[0].title"
+            />
+          }
+        }
+      </div>
+
+    </section>
+
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section gallery-section">
+
+      <div class="section-heading">
+        <p class="badge">GALERI</p>
+
+        <h2>Suasana KostKu</h2>
+
+        <p>
+          Lihat suasana dan fasilitas yang tersedia di KostKu Residence.
+        </p>
+      </div>
+
+      @if (gallery$ | async; as gallery) {
+
+        <div class="gallery-grid">
+
+          @for (item of gallery; track item.id) {
+
+            <article class="gallery-card">
+
+              <img
+                [src]="item.image_url"
+                [alt]="item.title"
+              />
+
+              <div class="gallery-info">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.description }}</p>
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+
+    <!-- ROOMS -->
+    <section id="rooms" class="section rooms-section">
+
+      <div class="section-heading">
+        <p class="badge">PILIHAN KAMAR</p>
+
+        <h2>Kamar yang Sesuai untukmu</h2>
+
+        <p>
+          Pilih kamar sesuai kebutuhan dan budget kamu.
+        </p>
+      </div>
+
+      @if (rooms$ | async; as rooms) {
+
+        <div class="rooms-grid">
+
+          @for (room of rooms; track room.id) {
+
+            <article class="room-card">
+
+              <div class="room-top">
+                <span
+                  class="room-status"
+                  [class.occupied]="room.status === 'OCCUPIED'"
+                >
+                  {{
+                    room.status === 'AVAILABLE'
+                      ? 'Tersedia'
+                      : 'Terisi'
+                  }}
+                </span>
+
+                <span class="room-size">
+                  📐 {{ room.size }}
+                </span>
+              </div>
+
+              <h3>{{ room.name }}</h3>
+
+              <p>
+                {{ room.description }}
+              </p>
+
+              <div class="room-price">
+                <span>Mulai dari</span>
+                <strong>
+                  Rp {{ room.price | number }}
+                </strong>
+                <span>/ bulan</span>
+              </div>
+
+              <a
+                [href]="'https://wa.me/' + kost.whatsapp"
+                target="_blank"
+                class="room-button"
+              >
+                Tanya Kamar
+              </a>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+
+    <!-- FACILITIES -->
+    <section id="facilities" class="section facilities-section">
+
+      <div class="section-heading">
+        <p class="badge">FASILITAS</p>
+
+        <h2>Semua yang Kamu Butuhkan</h2>
+
+        <p>
+          Fasilitas untuk membuat tinggal di KostKu lebih nyaman.
+        </p>
+      </div>
+
+      @if (facilities$ | async; as facilities) {
+
+        <div class="facilities-grid">
+
+          @for (facility of facilities; track facility.id) {
+
+            <article class="facility-card">
+
+              <div class="facility-icon">
+                {{ facility.icon }}
+              </div>
+
+              <h3>{{ facility.name }}</h3>
+
+              <p>
+                {{ facility.description }}
+              </p>
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+
+      <div class="contact-content">
+
+        <p class="badge">TERTARIK?</p>
+
+        <h2>
+          Yuk, lihat kamar dan
+          <span>hubungi kami.</span>
+        </h2>
+
+        <p>
+          Punya pertanyaan tentang kamar, harga, atau fasilitas?
+          Hubungi kami langsung melalui WhatsApp.
+        </p>
+
+        <a
+          [href]="'https://wa.me/' + kost.whatsapp"
+          target="_blank"
+          class="primary-button"
+        >
+          Chat WhatsApp
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+      <div class="footer-brand">
+        <strong>KostKu</strong>
+        <span>{{ kost.name }}</span>
+      </div>
+
+      <p>
+        © 2026 KostKu Residence. All rights reserved.
+      </p>
+
+    </footer>
+
+  }
+
+</div>

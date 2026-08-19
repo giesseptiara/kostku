@@ -1,0 +1,40 @@
+<section class="rooms">
+  <div class="section-header">
+    <p class="badge">PILIHAN KAMAR</p>
+    <h2>Kamar Kost</h2>
+    <p>
+      Pilih kamar yang sesuai dengan kebutuhan dan budget kamu.
+    </p>
+  </div>
+
+  @if (rooms$ | async; as rooms) {
+    <div class="room-grid">
+      @for (room of rooms; track room.id) {
+        <article class="room-card">
+          <div class="room-content">
+            <span
+              class="status"
+              [class.available]="room.status === 'AVAILABLE'"
+            >
+              {{ room.status === 'AVAILABLE' ? 'Tersedia' : 'Terisi' }}
+            </span>
+
+            <h3>{{ room.name }}</h3>
+
+            <p>{{ room.description }}</p>
+
+            <p>📐 {{ room.size }}</p>
+
+            <strong>
+              Rp {{ room.price | number }}
+            </strong>
+
+            <span>/ bulan</span>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <p>Memuat kamar...</p>
+  }
+</section>
