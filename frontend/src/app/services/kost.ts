@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface KostData {
   id: number;
@@ -23,7 +24,7 @@ interface KostResponse {
   providedIn: 'root',
 })
 export class Kost {
-  private apiUrl = 'http://localhost:5000/api/kost';
+  private apiUrl = `${environment.apiUrl}/kost`;
 
   constructor(private http: HttpClient) {}
 
