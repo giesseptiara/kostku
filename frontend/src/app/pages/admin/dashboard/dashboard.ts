@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { Observable, catchError, map, of } from 'rxjs';
 
 import { Rooms, Room } from '../../../services/rooms';
+import { Facilities } from '../../../services/facilities';
+import { Gallery } from '../../../services/gallery';
 import { Auth, Admin } from '../../../services/auth';
 
 @Component({
@@ -14,10 +16,14 @@ import { Auth, Admin } from '../../../services/auth';
 })
 export class Dashboard {
   rooms$: Observable<Room[]>;
+  facilitiesCount$: Observable<number>;
+  galleryCount$: Observable<number>;
   admin$: Observable<Admin>;
 
   constructor(
     private roomsService: Rooms,
+    private facilitiesService: Facilities,
+    private galleryService: Gallery,
     private auth: Auth,
     private router: Router
   ) {
@@ -28,6 +34,30 @@ export class Dashboard {
         return of([]);
       })
     );
+
+    this.facilitiesCount$ =
+      this.facilitiesService.getFacilities().pipe(
+        map((response) => response.data.length),
+        catchError((error) => {
+          console.error(
+            'DASHBOARD FACILITIES ERROR:',
+            error
+          );
+          return of(0);
+        })
+      );
+
+    this.galleryCount$ =
+      this.galleryService.getGallery().pipe(
+        map((response) => response.data.length),
+        catchError((error) => {
+          console.error(
+            'DASHBOARD GALLERY ERROR:',
+            error
+          );
+          return of(0);
+        })
+      );
 
     this.admin$ = this.auth.getCurrentAdmin().pipe(
       map((response) => response.data.admin),

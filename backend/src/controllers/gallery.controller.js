@@ -128,9 +128,44 @@ async function deleteGallery(req, res) {
   }
 }
 
+async function uploadGalleryImage(req, res) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "File gambar wajib dipilih",
+      });
+    }
+
+    const imageUrl =
+      `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+
+    res.status(201).json({
+      success: true,
+      message: "Gambar berhasil diupload",
+      data: {
+        image_url: imageUrl,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Upload gallery image error:",
+      error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Gagal mengupload gambar",
+    });
+  }
+}
+
 module.exports = {
   getGallery,
   createGallery,
   updateGallery,
   deleteGallery,
+  uploadGalleryImage,
 };

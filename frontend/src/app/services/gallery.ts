@@ -16,6 +16,14 @@ export interface GalleryInput {
   description: string;
 }
 
+export interface GalleryUploadResponse {
+  success: boolean;
+  message: string;
+  data: {
+    image_url: string;
+  };
+}
+
 interface GalleryResponse {
   success: boolean;
   data: GalleryItem[];
@@ -65,4 +73,17 @@ export class Gallery {
       `${this.apiUrl}/${id}`
     );
   }
+
+  uploadImage(
+  file: File
+): Observable<GalleryUploadResponse> {
+  const formData = new FormData();
+
+  formData.append('image', file);
+
+  return this.http.post<GalleryUploadResponse>(
+    `${this.apiUrl}/upload`,
+    formData
+  );
+}
 }

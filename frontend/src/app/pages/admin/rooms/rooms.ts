@@ -68,20 +68,29 @@ export class RoomsAdminComponent {
 }
 
   openCreateForm(): void {
-    this.editingRoom = null;
+  this.editingRoom = null;
 
-    this.form = {
-      name: '',
-      description: '',
-      price: 0,
-      status: 'AVAILABLE',
-      size: '',
-    };
+  this.form = {
+    name: '',
+    description: '',
+    price: 0,
+    status: 'AVAILABLE',
+    size: '',
+  };
 
-    this.error = '';
-    this.success = '';
-    this.showForm = true;
-  }
+  this.error = '';
+  this.success = '';
+  this.showForm = true;
+
+  setTimeout(() => {
+    document
+      .querySelector('.form-card')
+      ?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+  }, 0);
+}
 
   openEditForm(room: Room): void {
     this.editingRoom = room;
@@ -97,6 +106,17 @@ export class RoomsAdminComponent {
     this.error = '';
     this.success = '';
     this.showForm = true;
+
+    this.showForm = true;
+
+setTimeout(() => {
+  document
+    .querySelector('.form-card')
+    ?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+}, 0);
   }
 
   closeForm(): void {

@@ -1,6 +1,8 @@
 <div class="dashboard">
 
+  <!-- HEADER -->
   <header class="dashboard-header">
+
     <div class="header-content">
       <span class="badge">KOSTKU ADMIN</span>
 
@@ -8,7 +10,8 @@
 
       @if (admin$ | async; as admin) {
         <p>
-          Selamat datang, <strong>{{ admin.name }}</strong>.
+          Selamat datang,
+          <strong>{{ admin.name }}</strong>.
         </p>
       } @else {
         <p>
@@ -18,6 +21,7 @@
     </div>
 
     <div class="header-actions">
+
       <a
         routerLink="/"
         target="_blank"
@@ -26,77 +30,349 @@
         Lihat Website
       </a>
 
-      <button type="button" (click)="logout()">
+      <button
+        type="button"
+        (click)="logout()"
+      >
         Logout
       </button>
+
     </div>
+
   </header>
 
 
   @if (rooms$ | async; as rooms) {
 
+    <!-- STATISTICS -->
     <section class="stats">
 
       <div class="stat-card">
-        <span>Total Kamar</span>
-        <strong>{{ rooms.length }}</strong>
+
+        <div class="stat-icon room-icon">
+          🛏
+        </div>
+
+        <div class="stat-content">
+          <span>Total Kamar</span>
+
+          <strong>
+            {{ rooms.length }}
+          </strong>
+
+          <a routerLink="/admin/rooms">
+            Kelola kamar →
+          </a>
+        </div>
+
       </div>
 
-      <div class="stat-card">
-        <span>Kamar Tersedia</span>
-        <strong>{{ getAvailableRooms(rooms) }}</strong>
-      </div>
 
       <div class="stat-card">
-        <span>Kamar Terisi</span>
-        <strong>{{ getOccupiedRooms(rooms) }}</strong>
+
+        <div class="stat-icon available-icon">
+          ✓
+        </div>
+
+        <div class="stat-content">
+          <span>Kamar Tersedia</span>
+
+          <strong>
+            {{ getAvailableRooms(rooms) }}
+          </strong>
+
+          <small>
+            Siap disewa
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon occupied-icon">
+          ●
+        </div>
+
+        <div class="stat-content">
+          <span>Kamar Terisi</span>
+
+          <strong>
+            {{ getOccupiedRooms(rooms) }}
+          </strong>
+
+          <small>
+            Sedang dihuni
+          </small>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon facility-icon">
+          ✦
+        </div>
+
+        <div class="stat-content">
+          <span>Fasilitas</span>
+
+          @if (facilitiesCount$ | async; as count) {
+            <strong>
+              {{ count }}
+            </strong>
+          } @else {
+            <strong>0</strong>
+          }
+
+          <a routerLink="/admin/facilities">
+            Kelola fasilitas →
+          </a>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon gallery-icon">
+          ▧
+        </div>
+
+        <div class="stat-content">
+          <span>Gallery</span>
+
+          @if (galleryCount$ | async; as count) {
+            <strong>
+              {{ count }}
+            </strong>
+          } @else {
+            <strong>0</strong>
+          }
+
+          <a routerLink="/admin/gallery">
+            Kelola gallery →
+          </a>
+        </div>
+
       </div>
 
     </section>
 
 
+    <!-- MANAGEMENT -->
+    <section class="management-section">
+
+      <div class="section-header">
+
+        <div>
+          <span class="badge">
+            KELOLA DATA
+          </span>
+
+          <h2>
+            Manajemen KostKu
+          </h2>
+
+          <p>
+            Kelola seluruh informasi yang ditampilkan
+            pada website KostKu.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="management-grid">
+
+        <!-- ROOMS -->
+        <a
+          routerLink="/admin/rooms"
+          class="management-card"
+        >
+
+          <div class="management-icon">
+            🛏
+          </div>
+
+          <div class="management-content">
+            <h3>Kamar</h3>
+
+            <p>
+              Tambah, edit, hapus, dan ubah status kamar.
+            </p>
+          </div>
+
+          <span class="management-arrow">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- FACILITIES -->
+        <a
+          routerLink="/admin/facilities"
+          class="management-card"
+        >
+
+          <div class="management-icon">
+            ✦
+          </div>
+
+          <div class="management-content">
+            <h3>Fasilitas</h3>
+
+            <p>
+              Kelola fasilitas yang tersedia di KostKu.
+            </p>
+          </div>
+
+          <span class="management-arrow">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- GALLERY -->
+        <a
+          routerLink="/admin/gallery"
+          class="management-card"
+        >
+
+          <div class="management-icon">
+            ▧
+          </div>
+
+          <div class="management-content">
+            <h3>Gallery</h3>
+
+            <p>
+              Kelola foto dan gambar KostKu.
+            </p>
+          </div>
+
+          <span class="management-arrow">
+            →
+          </span>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ROOMS -->
     <section class="rooms-section">
 
       <div class="section-header">
+
         <div>
-          <span class="badge">DATA KAMAR</span>
-          <h2>Daftar Kamar</h2>
+          <span class="badge">
+            DATA KAMAR
+          </span>
+
+          <h2>
+            Daftar Kamar
+          </h2>
         </div>
 
-        <a routerLink="/rooms">
-          Lihat Semua
+        <a routerLink="/admin/rooms">
+          Kelola Kamar →
         </a>
+
       </div>
 
 
-      <div class="rooms-table">
+      @if (rooms.length === 0) {
 
-        @for (room of rooms; track room.id) {
+        <div class="empty-state">
 
-          <div class="room-row">
-
-            <div class="room-info">
-              <strong>{{ room.name }}</strong>
-              <p>{{ room.size }}</p>
-            </div>
-
-            <div class="room-price">
-              Rp {{ room.price | number }} / bulan
-            </div>
-
-            <div
-              class="room-status"
-              [class.available]="room.status === 'AVAILABLE'"
-              [class.occupied]="room.status === 'OCCUPIED'"
-            >
-              {{ room.status === 'AVAILABLE' ? 'Tersedia' : 'Terisi' }}
-            </div>
-
+          <div class="empty-icon">
+            🛏
           </div>
 
-        }
+          <strong>
+            Belum ada kamar
+          </strong>
 
-      </div>
+          <p>
+            Tambahkan data kamar untuk mulai mengelola
+            KostKu.
+          </p>
+
+          <a
+            routerLink="/admin/rooms"
+            class="primary-link"
+          >
+            + Tambah Kamar
+          </a>
+
+        </div>
+
+      } @else {
+
+        <div class="rooms-table">
+
+          @for (
+            room of rooms;
+            track room.id
+          ) {
+
+            <div class="room-row">
+
+              <div class="room-info">
+
+                <strong>
+                  {{ room.name }}
+                </strong>
+
+                <p>
+                  {{ room.size }}
+                </p>
+
+              </div>
+
+
+              <div class="room-price">
+
+                Rp {{ room.price | number }}
+                <span>/ bulan</span>
+
+              </div>
+
+
+              <div
+                class="room-status"
+                [class.available]="
+                  room.status === 'AVAILABLE'
+                "
+                [class.occupied]="
+                  room.status === 'OCCUPIED'
+                "
+              >
+
+                <span class="status-dot"></span>
+
+                {{
+                  room.status === 'AVAILABLE'
+                    ? 'Tersedia'
+                    : 'Terisi'
+                }}
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
 
     </section>
 
