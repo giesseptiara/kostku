@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common'; // 1. Tambahkan import ini
 import { environment } from '../../environments/environment';
 
 export interface Admin {
@@ -31,8 +32,16 @@ export interface MeResponse {
 })
 export class Auth {
   private apiUrl = `${environment.apiUrl}/auth`;
+  private isBrowser: boolean; // 2. Tambahkan variabel penanda
 
-  constructor(private http: HttpClient) {}
+  // 3. Inject PLATFORM_ID di constructor
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // Cek apakah kode running di browser atau server
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, {
@@ -46,18 +55,26 @@ export class Auth {
   }
 
   saveToken(token: string): void {
-    localStorage.setItem('kostku_token', token);
+    if (this.isBrowser) {
+      localStorage.setItem('kostku_token', token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('kostku_token');
+    if (this.isBrowser) {
+      return localStorage.getItem('kostku_token');
+    }
+    return null; // Kembalikan null jika sedang di-render oleh server Vercel
   }
 
   logout(): void {
-    localStorage.removeItem('kostku_token');
+    if (this.isBrowser) {
+      localStorage.removeItem('kostku_token');
+    }
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    return !!token && token !== 'undefined' && token !== 'null';
   }
 }
