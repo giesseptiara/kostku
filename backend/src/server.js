@@ -36,6 +36,6 @@ app.use("/api/gallery", galleryRoutes);
 app.use("/api/admins", adminRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(PORT, () => {
-  console.log(`KostKu API running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`KostKu API running on port ${PORT}`);
 });
