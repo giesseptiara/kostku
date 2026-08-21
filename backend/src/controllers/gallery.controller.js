@@ -1,4 +1,5 @@
 const galleryService = require("../services/gallery.service");
+const cloudinary = require("../config/cloudinary");
 
 async function getGallery(req, res) {
   try {
@@ -137,14 +138,29 @@ async function uploadGalleryImage(req, res) {
       });
     }
 
-    const imageUrl =
-      `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "kostku/gallery",
+          resource_type: "image",
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+
+      uploadStream.end(req.file.buffer);
+    });
 
     res.status(201).json({
       success: true,
       message: "Gambar berhasil diupload",
       data: {
-        image_url: imageUrl,
+        image_url: result.secure_url,
       },
     });
   } catch (error) {
