@@ -36,6 +36,10 @@ app.use("/api/gallery", galleryRoutes);
 app.use("/api/admins", adminRoutes);
 app.use("/api/auth", authRoutes);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`KostKu API running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`KostKu API running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
